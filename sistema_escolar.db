@@ -1,0 +1,157 @@
+CREATE TABLE Usuarios (
+    id_usuario SERIAL PRIMARY KEY,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) CHECK (rol IN ('padre', 'profesor', 'directivo')),
+    sesion_iniciada BOOLEAN DEFAULT FALSE
+);
+
+-- Tabla: Representantes
+CREATE TABLE Representantes (
+    id_representante SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    nacionalidad VARCHAR(50),
+    ciudad VARCHAR(50),
+    correo VARCHAR(100),
+    direccion_domicilio TEXT,
+    foto VARCHAR(255),
+    numero_celular_1 VARCHAR(15),
+    numero_celular_2 VARCHAR(15),
+    numero_celular_3 VARCHAR(15),
+    genero VARCHAR(20) CHECK (genero IN ('masculino', 'femenino', 'otro')),
+    cantidad_representados INT DEFAULT 0,
+    personas_no_autorizadas TEXT
+);
+
+-- Tabla: Estudiantes
+CREATE TABLE Estudiantes (
+    id_estudiante SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    genero VARCHAR(20) CHECK (genero IN ('masculino', 'femenino', 'otro')),
+    nacionalidad VARCHAR(50),
+    fecha_nacimiento DATE,
+    curso VARCHAR(50),
+    edad INT,
+    problemas_discapacidad BOOLEAN DEFAULT FALSE,
+    problemas_salud TEXT,
+    tipo_sangre VARCHAR(5),
+    id_representante INT REFERENCES Representantes(id_representante) ON DELETE SET NULL,
+    familiares_autorizados TEXT
+);
+
+-- Tabla: Profesores
+CREATE TABLE Profesores (
+    id_profesor SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    cedula VARCHAR(20) NOT NULL UNIQUE
+);
+
+-- Tabla: Cursos
+CREATE TABLE Cursos (
+    id_curso SERIAL PRIMARY KEY,
+    nombre_curso VARCHAR(100) NOT NULL
+);
+
+-- Tabla: Materias
+CREATE TABLE Materias (
+    id_materia SERIAL PRIMARY KEY,
+    nombre_materia VARCHAR(100) NOT NULL
+);
+
+-- Tabla: Actividades
+CREATE TABLE Actividades (
+    id_actividad SERIAL PRIMARY KEY,
+    nombre_actividad VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    fecha DATE NOT NULL,
+    id_materia INT REFERENCES Materias(id_materia) ON DELETE CASCADE,
+    id_curso INT REFERENCES Cursos(id_curso) ON DELETE CASCADE,
+    id_profesor INT REFERENCES Profesores(id_profesor) ON DELETE SET NULL
+);
+
+-- Tabla: Rendimiento
+CREATE TABLE Rendimiento (
+    id_rendimiento SERIAL PRIMARY KEY,
+    id_estudiante INT REFERENCES Estudiantes(id_estudiante) ON DELETE CASCADE,
+    tarea VARCHAR(100) NOT NULL,
+    estado VARCHAR(20) CHECK (estado IN ('pendiente', 'completada')),
+    observaciones TEXT
+);
+
+-- Tabla: Notificaciones
+CREATE TABLE Notificaciones (
+    id_notificacion SERIAL PRIMARY KEY,
+    id_usuario INT REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
+    mensaje TEXT NOT NULL,
+    fecha DATE NOT NULL
+);
+
+
+-- Insertar registros en la tabla Usuarios
+INSERT INTO Usuarios (cedula, correo, contraseña, rol, sesion_iniciada) VALUES
+('0102030405', 'padre1@gmail.com', 'password123', 'padre', FALSE),
+('0203040506', 'profesor1@gmail.com', 'password123', 'profesor', TRUE),
+('0304050607', 'directivo1@gmail.com', 'password123', 'directivo', TRUE),
+('0405060708', 'padre2@gmail.com', 'password123', 'padre', FALSE);
+
+-- Insertar registros en la tabla Representantes
+INSERT INTO Representantes (nombre, apellido, cedula, nacionalidad, ciudad, correo, direccion_domicilio, numero_celular_1, genero, cantidad_representados, personas_no_autorizadas) VALUES
+('Carlos', 'Gómez', '0102030405', 'Ecuador', 'Quito', 'padre1@gmail.com', 'Av. Siempre Viva 123', '0999999999', 'masculino', 2, 'Ninguna'),
+('María', 'Pérez', '0405060708', 'Ecuador', 'Guayaquil', 'padre2@gmail.com', 'Av. Los Tulipanes 456', '0998888888', 'femenino', 1, 'Juan Pérez');
+
+-- Insertar registros en la tabla Estudiantes
+INSERT INTO Estudiantes (nombre, cedula, genero, nacionalidad, fecha_nacimiento, curso, edad, problemas_discapacidad, problemas_salud, tipo_sangre, id_representante, familiares_autorizados) VALUES
+('Luis Gómez', '0506070809', 'masculino', 'Ecuador', '2010-05-10', 'Octavo A', 14, FALSE, 'Asma', 'O+', 1, 'Ana Gómez'),
+('Laura Pérez', '0607080910', 'femenino', 'Ecuador', '2012-07-15', 'Sexto B', 12, FALSE, NULL, 'A+', 2, 'Carlos Pérez');
+
+-- Insertar registros en la tabla Profesores
+INSERT INTO Profesores (nombre, cedula) VALUES
+('Pedro Martínez', '0708091011'),
+('Ana Torres', '0809101112');
+
+-- Insertar registros en la tabla Cursos
+INSERT INTO Cursos (nombre_curso) VALUES
+('Octavo A'),
+('Sexto B');
+
+-- Insertar registros en la tabla Materias
+INSERT INTO Materias (nombre_materia) VALUES
+('Matemáticas'),
+('Ciencias Sociales');
+
+-- Insertar registros en la tabla Actividades
+INSERT INTO Actividades (nombre_actividad, descripcion, fecha, id_materia, id_curso, id_profesor) VALUES
+('Tarea #1', 'Resolver ejercicios de álgebra', '2024-11-28', 1, 1, 1),
+('Tarea #2', 'Leer sobre la historia del Ecuador', '2024-11-29', 2, 2, 2);
+
+-- Insertar registros en la tabla Rendimiento
+INSERT INTO Rendimiento (id_estudiante, tarea, estado, observaciones) VALUES
+(1, 'Tarea #1', 'pendiente', 'Estudiante necesita apoyo en matemáticas'),
+(2, 'Tarea #2', 'completada', 'Buen desempeño en historia');
+
+-- Insertar registros en la tabla Notificaciones
+INSERT INTO Notificaciones (id_usuario, mensaje, fecha) VALUES
+(1, 'Reunión de padres de familia programada para el 30 de noviembre.', '2024-11-25'),
+(3, 'Reporte mensual de actividades docentes disponible.', '2024-11-24');
+
+
+
+SELECT * from actividades
+
+SELECT * from cursos
+SELECT * from estudiantes
+SELECT * from materias 
+SELECT * from notificaciones
+SELECT * from profesores
+SELECT * from rendimiento
+SELECT * from representantes
+SELECT * from usuarios
+
+
+
+
+
