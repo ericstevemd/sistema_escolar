@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaClient } from '@prisma/client';
@@ -10,7 +10,9 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
   }
 
   create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+    return this.usuarios.create({
+      data:createUsuarioDto,
+    });
   }
 
   async findAll() {
@@ -24,15 +26,32 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
 
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number) {
+    const usuario=await this .usuarios.findUnique({
+      where :{id},
+
+
+    })
+    if(!usuario){
+      throw new NotFoundException('no hay usuario con es id ')
+    }
+    return  usuario
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+  async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
+    const usuario =await this.usuarios.findUnique({ where :{
+      id
+    }});
+    if(!usuario){
+      throw new NotFoundException ('el usuario con el id  no encuentra ')
+    }
+    return this.usuarios.update({
+      where:{id},
+      data:updateUsuarioDto
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} usuario`;
+  // }
 }

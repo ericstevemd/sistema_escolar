@@ -4,13 +4,13 @@ export class CreateUsuarioDto {
 
     @IsString()
     @IsNotEmpty()
-    cedula  :String 
+    cedula  :string 
     @IsString()  
     @IsNotEmpty()    
-    correo   :String
+    correo   :string
     @IsNotEmpty()
     @IsString()    
-    password :String
+    password :string
     
     @IsNotEmpty()
     @IsEnum(['padre', 'profesor', 'directivo'])
@@ -18,5 +18,5 @@ export class CreateUsuarioDto {
 
               // Puede ser enum en el futuro
     @IsBoolean()
-    sesionIniciada :String
+    sesionIniciada :boolean
 }
