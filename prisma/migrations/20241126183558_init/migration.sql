@@ -1,10 +1,13 @@
+-- CreateEnum
+CREATE TYPE "Rol" AS ENUM ('ADMIN', 'PROFESOR', 'REPRESENTANTE', 'ESTUDIANTE');
+
 -- CreateTable
 CREATE TABLE "Usuarios" (
     "id" SERIAL NOT NULL,
     "cedula" TEXT NOT NULL,
     "correo" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "rol" TEXT NOT NULL,
+    "rol" "Rol" NOT NULL,
     "sesionIniciada" BOOLEAN NOT NULL DEFAULT false,
     "profesorId" INTEGER,
 

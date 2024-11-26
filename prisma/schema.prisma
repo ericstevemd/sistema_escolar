@@ -6,13 +6,20 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+enum Rol {
+  ADMIN
+  PROFESOR
+  REPRESENTANTE
+  ESTUDIANTE
+}
+
 
 model Usuarios {
   id              Int      @id @default(autoincrement())
   cedula          String   @unique
   correo          String   @unique
   password        String
-  rol             String   // Puede ser enum en el futuro
+  rol             Rol   // Puede ser enum en el futuro
   sesionIniciada  Boolean  @default(false)
   profesor        Profesor?   @relation(fields: [profesorId], references: [id])
   profesorId      Int?

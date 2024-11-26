@@ -1,4 +1,5 @@
 
+import { Rol } from "@prisma/client"
 import { IsBoolean, IsEnum, IsNotEmpty, IsString,  } from "class-validator"
 
 export class CreateUsuarioDto {
@@ -14,9 +15,8 @@ export class CreateUsuarioDto {
     password :string
     
     @IsNotEmpty()
-    @IsEnum(['padre', 'profesor', 'directivo'])
-    rol: 'padre' | 'profesor' | 'directivo';
-
+    
+    rol: Rol
               // Puede ser enum en el futuro
     @IsBoolean()
     sesionIniciada :boolean

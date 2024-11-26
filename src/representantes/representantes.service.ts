@@ -52,7 +52,7 @@ try{
     return this.representantes.update({
       where:{id},
       data:updateRepresentanteDto
-    })
+    });
   }
 
   async remove(id: number) {
