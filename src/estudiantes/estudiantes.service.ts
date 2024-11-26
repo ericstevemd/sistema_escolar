@@ -1,19 +1,33 @@
-import { Injectable } from '@nestjs/common';
+
+
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class EstudiantesService {
-  create(createEstudianteDto: CreateEstudianteDto) {
-    return 'This action adds a new estudiante';
+export class EstudiantesService extends PrismaClient implements OnModuleInit {
+  async onModuleInit() {
+     await this.$connect;
+  }
+  async create(createEstudianteDto: CreateEstudianteDto) {
+   
+   
+    return await this.estudiantes.create({
+      data:createEstudianteDto
+    })
   }
 
   findAll() {
-    return `This action returns all estudiantes`;
+    return this.estudiantes.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} estudiante`;
+  async findOne(id: number) {
+    
+    const Estudiante =await this.estudiantes.findUnique({
+      where:{id},
+    })
+    return Estudiante
   }
 
   update(id: number, updateEstudianteDto: UpdateEstudianteDto) {
