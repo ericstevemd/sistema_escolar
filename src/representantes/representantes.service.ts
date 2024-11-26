@@ -1,4 +1,4 @@
-import { Representante } from './entities/representante.entity';
+
 import { ConflictException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateRepresentanteDto } from './dto/create-representante.dto';
 import { UpdateRepresentanteDto } from './dto/update-representante.dto';

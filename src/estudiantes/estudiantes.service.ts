@@ -1,6 +1,6 @@
 
 
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { PrismaClient } from '@prisma/client';
@@ -33,8 +33,19 @@ export class EstudiantesService extends PrismaClient implements OnModuleInit {
   update(id: number, updateEstudianteDto: UpdateEstudianteDto) {
     return `This action updates a #${id} estudiante`;
   }
+   
+  async remove(id: number) {
+const estudiante =await this.estudiantes.findUnique({
+  where:{id},
 
-  remove(id: number) {
-    return `This action removes a #${id} estudiante`;
+});
+if(!estudiante ){
+  throw new NotFoundException(" el estudiantes no es puede eliminar ")
+}
+await this.estudiantes.delete({
+  where:{id}
+
+});
+    return {nessage :'estudiantes con id no se encuentra '}
   }
 }

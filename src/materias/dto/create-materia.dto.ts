@@ -1,1 +1,9 @@
-export class CreateMateriaDto {}
+import { IsString } from "class-validator";
+
+export class CreateMateriaDto {
+
+@IsString()
+nombreMateria
+       
+      }
+

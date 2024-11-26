@@ -1,15 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class MateriasService {
-  create(createMateriaDto: CreateMateriaDto) {
-    return 'This action adds a new materia';
+export class MateriasService extends PrismaClient implements OnModuleInit  {
+ async onModuleInit() {
+await this.$connect();
+  }
+  
+  
+  async create(createMateriaDto: CreateMateriaDto) {
+    return  await this .materias.create({
+      data:createMateriaDto
+    });
   }
 
-  findAll() {
-    return `This action returns all materias`;
+   findAll() {
+    return this.materias.findMany();
   }
 
   findOne(id: number) {
