@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 INSERT INTO "Usuarios" ("cedula", "correo", "password", "rol", "sesionIniciada") VALUES
 ('0101010101', 'usuario1@example.com', 'password123', 'Administrador', false),
 ('0202020202', 'usuario2@example.com', 'password123', 'Profesor', false),
