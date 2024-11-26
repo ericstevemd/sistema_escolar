@@ -6,6 +6,7 @@ CREATE TABLE "Usuarios" (
     "password" TEXT NOT NULL,
     "rol" TEXT NOT NULL,
     "sesionIniciada" BOOLEAN NOT NULL DEFAULT false,
+    "profesorId" INTEGER,
 
     CONSTRAINT "Usuarios_pkey" PRIMARY KEY ("id")
 );
@@ -27,6 +28,7 @@ CREATE TABLE "Representantes" (
     "genero" TEXT NOT NULL,
     "cantidadRepresentados" INTEGER NOT NULL DEFAULT 0,
     "personasNoAutorizadas" TEXT,
+    "usuarioId" INTEGER,
 
     CONSTRAINT "Representantes_pkey" PRIMARY KEY ("id")
 );
@@ -122,6 +124,12 @@ CREATE UNIQUE INDEX "Estudiantes_cedula_key" ON "Estudiantes"("cedula");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profesor_cedula_key" ON "Profesor"("cedula");
+
+-- AddForeignKey
+ALTER TABLE "Usuarios" ADD CONSTRAINT "Usuarios_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Representantes" ADD CONSTRAINT "Representantes_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuarios"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Estudiantes" ADD CONSTRAINT "Estudiantes_representanteId_fkey" FOREIGN KEY ("representanteId") REFERENCES "Representantes"("id") ON DELETE SET NULL ON UPDATE CASCADE;

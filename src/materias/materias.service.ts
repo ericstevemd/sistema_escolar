@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
 import { PrismaClient } from '@prisma/client';
@@ -20,15 +20,34 @@ await this.$connect();
     return this.materias.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} materia`;
+  async findOne(id: number) {
+    const materias= await this.materias.findUnique({
+      where:{id}
+    });
+    if(!materias){
+      throw new NotFoundException("El id que estya buscando no se encuentra")
+    }
+    return materias 
   }
 
-  update(id: number, updateMateriaDto: UpdateMateriaDto) {
-    return `This action updates a #${id} materia`;
+ async update(id: number, updateMateriaDto: UpdateMateriaDto) {
+  const materias= await this.materias.findUnique({
+    where:{id}
+  }) ;
+  if(! materias){
+    throw new NotFoundException(" la materia fue actualizada ") 
+  }
+  return this.materias.update({
+    where :{id},
+    data:updateMateriaDto
+  })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} materia`;
+   async remove(id: number) {
+    const materias =await this.materias.findUnique({
+      where :{ id }
+
+    });
+    return { message: `la materia  con Id ${id} elminida correctamente `} 
   }
 }
