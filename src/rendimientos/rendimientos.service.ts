@@ -1,26 +1,69 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateRendimientoDto } from './dto/create-rendimiento.dto';
 import { UpdateRendimientoDto } from './dto/update-rendimiento.dto';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class RendimientosService {
-  create(createRendimientoDto: CreateRendimientoDto) {
-    return 'This action adds a new rendimiento';
+export class RendimientosService  extends PrismaClient implements OnModuleInit {
+ async onModuleInit() {
+  await this.$connect();
+    
+  }
+  async create(createRendimientoDto: CreateRendimientoDto) {
+   
+
+   
+    return await this.rendimientos.create({
+      data :createRendimientoDto
+    });
+ 
+  
   }
 
   findAll() {
-    return `This action returns all rendimientos`;
+    return this.rendimientos.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} rendimiento`;
+  async findOne(id: number) {
+    const rendimiento = await this.rendimientos.findUnique({
+where:{id}
+
+    });
+    if(!rendimiento ){
+      throw new NotFoundException('no hay rendimiento con es id ')
+    }
+
+   return rendimiento
   }
 
-  update(id: number, updateRendimientoDto: UpdateRendimientoDto) {
-    return `This action updates a #${id} rendimiento`;
+  async update(id: number, updateRendimientoDto: UpdateRendimientoDto) {
+    const  rendimiento =await this.rendimientos.findUnique({
+      where:{id}
+      
+    });
+    if(!rendimiento ){
+      throw new NotFoundException ('el rendimientos de id ')
+    }
+
+    return this.rendimientos.update({
+      where :{id},
+      data:updateRendimientoDto
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} rendimiento`;
+  async remove(id: number) {
+    const rendimiento =await this.rendimientos.findUnique({
+      where:{id}
+    });
+    if(! rendimiento){
+      throw new NotFoundException('rendimiento con id no es encuentra ')
+    
+    }
+    await this .rendimientos.delete({
+      where:{id}
+    });
+
+
+    return {nessage : `rendimientos con ID ${id} eliminado correctamente`}
   }
 }
