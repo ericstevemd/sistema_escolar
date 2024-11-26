@@ -1,0 +1,95 @@
+
+INSERT INTO "Representantes" ("nombre", "apellido", "cedula", "nacionalidad", "ciudad", "correo", "direccion_Domicilio", "foto", "numeroCelular1", "numeroCelular2", "numeroCelular3", "genero", "cantidadRepresentados", "personasNoAutorizadas") VALUES
+('Juan', 'Pérez', '1111111111', 'Ecuador', 'Quito', 'jperez@example.com', 'Av. Siempre Viva 123', 'foto1.jpg', '0991111111', NULL, NULL, 'Masculino', 2, NULL),
+('Ana', 'Gómez', '2222222222', 'Ecuador', 'Guayaquil', 'agomez@example.com', 'Calle Falsa 456', 'foto2.jpg', '0992222222', NULL, NULL, 'Femenino', 1, 'Persona X');
+
+
+INSERT INTO "Estudiantes" ("nombre", "cedula", "genero", "nacionalidad", "fechaNacimiento", "curso", "edad", "problemasDiscapacidad", "problemasSalud", "tipoSangre", "representanteId") VALUES
+('Luis', '3333333333', 'Masculino', 'Ecuador', '2010-01-01', '6to Grado', 14, false, NULL, 'O+', 1),
+('María', '4444444444', 'Femenino', 'Ecuador', '2012-02-02', '4to Grado', 12, true, 'Asma', 'A-', 2);
+
+
+INSERT INTO "Profesor" ("nombre", "cedula") VALUES
+('Carlos', '5555555555'),
+('Laura', '6666666666');
+
+
+
+INSERT INTO "Cursos" ("nombreCurso") VALUES
+('6to Grado'),
+('4to Grado');
+
+
+
+INSERT INTO "Rendimientos" ("estudianteId", "tarea", "estado", "observaciones") VALUES
+(10, 'Tarea 1', 'Completo', 'Buen desempeño'),
+(14, 'Tarea 1', 'Pendiente', 'Falta entrega');
+
+
+
+INSERT INTO "Notificacion" ("usuarioId", "mensaje", "fecha") VALUES
+(1, 'Tienes una nueva actividad asignada', '2024-11-25'),
+(2, 'Tu curso ha sido actualizado', '2024-11-24');
+
+INSERT INTO "Materias" ("nombreMateria") VALUES
+('Matemáticas'),
+('Ciencias Naturales');
+
+
+INSERT INTO "Actividad" ("nombre", "descripcion", "fecha", "materiaId", "cursoId", "profesorId") VALUES
+('Tarea 1', 'Resolver ejercicios del capítulo 3', '2024-11-30', 1, 1, 1),
+('Proyecto Final', 'Exposición sobre energía renovable', '2024-12-15', 2, 2, 2);
+
+INSERT INTO "Usuarios" ("cedula", "correo", "password", "rol", "sesionIniciada") VALUES
+('0101010101', 'usuario1@example.com', 'password123', 'Administrador', false),
+('0202020202', 'usuario2@example.com', 'password123', 'Profesor', false),
+('0303030303', 'usuario3@example.com', 'password123', 'Estudiante', false),
+('0404040404', 'usuario4@example.com', 'password123', 'Representante', false),
+('0505050505', 'usuario5@example.com', 'password123', 'Administrador', true),
+('0606060606', 'usuario6@example.com', 'password123', 'Profesor', true),
+('0707070707', 'usuario7@example.com', 'password123', 'Estudiante', false),
+('0808080808', 'usuario8@example.com', 'password123', 'Representante', false),
+('0909090909', 'usuario9@example.com', 'password123', 'Administrador', false),
+('1010101010', 'usuario10@example.com', 'password123', 'Profesor', true);
+
+
+INSERT INTO "Representantes" ("nombre", "apellido", "cedula", "nacionalidad", "ciudad", "correo", "direccion_Domicilio", "foto", "numeroCelular1", "numeroCelular2", "numeroCelular3", "genero", "cantidadRepresentados", "personasNoAutorizadas") VALUES
+('Juan', 'Pérez', '1111111111', 'Ecuador', 'Quito', 'jperez@example.com', 'Av. Siempre Viva 123', 'foto1.jpg', '0991111111', NULL, NULL, 'Masculino', 2, NULL),
+('Ana', 'Gómez', '2222222222', 'Ecuador', 'Guayaquil', 'agomez@example.com', 'Calle Falsa 456', 'foto2.jpg', '0992222222', NULL, NULL, 'Femenino', 1, 'Persona X');
+
+
+INSERT INTO "Estudiantes" ("nombre", "cedula", "genero", "nacionalidad", "fechaNacimiento", "curso", "edad", "problemasDiscapacidad", "problemasSalud", "tipoSangre", "representanteId") VALUES
+('Luis', '3333333333', 'Masculino', 'Ecuador', '2010-01-01', '6to Grado', 14, false, NULL, 'O+', 1),
+('María', '4444444444', 'Femenino', 'Ecuador', '2012-02-02', '4to Grado', 12, true, 'Asma', 'A-', 2);
+
+
+INSERT INTO "Profesor" ("nombre", "cedula") VALUES
+('Carlos', '5555555555'),
+('Laura', '6666666666');
+
+
+
+INSERT INTO "Cursos" ("nombreCurso") VALUES
+('6to Grado'),
+('4to Grado');
+
+
+
+INSERT INTO "Rendimientos" ("estudianteId", "tarea", "estado", "observaciones") VALUES
+(1, 'Tarea 1', 'Completo', 'Buen desempeño'),
+(2, 'Tarea 1', 'Pendiente', 'Falta entrega');
+
+
+
+INSERT INTO "Notificacion" ("usuarioId", "mensaje", "fecha") VALUES
+(1, 'Tienes una nueva actividad asignada', '2024-11-25'),
+(2, 'Tu curso ha sido actualizado', '2024-11-24');
+
+INSERT INTO "Materias" ("nombreMateria") VALUES
+('Matemáticas'),
+('Ciencias Naturales');
+
+
+INSERT INTO "Actividad" ("nombre", "descripcion", "fecha", "materiaId", "cursoId", "profesorId") VALUES
+('Tarea 1', 'Resolver ejercicios del capítulo 3', '2024-11-30', 1, 1, 1),
+('Proyecto Final', 'Exposición sobre energía renovable', '2024-12-15', 2, 2, 2);
