@@ -54,15 +54,9 @@ const skip =(page -1)*limit;
   }
 
   async findOne(id:number,cedula?:string ,correo?:string) {
-    const filters:any ={id};
-    if(cedula){
-      filters.cedula=cedula;
-    }
-    if(correo){
-    filters.correo=correo;
-    }
+    
     const usuario=await this.usuarios.findFirst({
-    where :filters,     
+    where :{id},     
     })
     if(!usuario){
       throw new NotFoundException('no hay usuario con es id ')
