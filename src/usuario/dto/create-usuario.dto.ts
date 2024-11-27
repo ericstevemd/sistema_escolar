@@ -20,4 +20,6 @@ export class CreateUsuarioDto {
               // Puede ser enum en el futuro
     @IsBoolean()
     sesionIniciada :boolean
+    @IsBoolean()
+    isDeleted :boolean
 }

@@ -16,24 +16,50 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
     });
   }
 
-  async findAll() {
+  async findAll(cedula :string ,password:string ,page: number=1, limit:number =10) {
+    const skip =(page -1) *limit;
     try{
 
-      return this.usuarios.findMany()
-    }catch(error){
+    const usuario=await this.usuarios.findMany({
+        where:{
+          cedula:cedula,
+          password:password,
+          isDeleted: false,
+      } ,
+      skip:skip,
+      take:limit,
+});
+const total =await this.usuarios.count({where
+  :{
+    isDeleted: false,
+  },
+});
+return {
+  data: usuario,
+  meta: {
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  },
+  
+
+  };
+      
+
+      }  catch(error: any){
       console.error('Error en finMany :',error);
       throw error;
     }
-
   }
+    
+  
 
   async findOne(id: number) {
     const usuario=await this .usuarios.findUnique({
-      where :{id},
-
-
+      where :{id},     
     })
-    if(!usuario){
+    if(!usuario|| usuario.isDeleted){
       throw new NotFoundException('no hay usuario con es id ')
     }
     return  usuario
@@ -52,7 +78,15 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
     })
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} usuario`;
-  // }
+   async remove(id: number) {
+    const usuario = await this.usuarios.findUnique({ where: { id } });
+    if (!usuario) {
+      throw new NotFoundException('El usuario con el ID proporcionado no existe');
+    }
+  
+    return this.usuarios.update({
+      where: { id },
+      data: { isDeleted: true }, // Marcamos como eliminado
+    });
+  }
 }

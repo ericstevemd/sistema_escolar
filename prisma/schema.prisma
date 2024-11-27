@@ -23,6 +23,7 @@ model Usuarios {
   sesionIniciada  Boolean  @default(false)
   profesor        Profesor?   @relation(fields: [profesorId], references: [id])
   profesorId      Int?
+  isDeleted      Boolean @default(false)
   notificaciones  Notificacion[]
   
 
