@@ -16,7 +16,7 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
     });
   }
 
-  async findAll(cedula :string ,password:string ,page: number=1, limit:number =10) {
+  async findAll(cedula?:string ,password?:string ,page: number=1, limit:number =10) {
     const skip =(page -1) *limit;
     try{
 
