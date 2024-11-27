@@ -16,50 +16,55 @@ export class UsuarioService extends PrismaClient implements OnModuleInit{
     });
   }
 
-  async findAll(cedula?:string ,password?:string ,page: number=1, limit:number =10) {
-    const skip =(page -1) *limit;
+  async findAll(isActive: boolean = true, page: number=1 ,limit: number=10) {
+   
     try{
+const skip =(page -1)*limit;
 
-    const usuario=await this.usuarios.findMany({
-        where:{
-          cedula:cedula,
-          password:password,
-          isDeleted: false,
-      } ,
+   const usuario= await this.usuarios.findMany(
+    {
+      where:{
+        isDeleted:!isActive
+      },
       skip:skip,
       take:limit,
-});
-const total =await this.usuarios.count({where
-  :{
-    isDeleted: false,
-  },
-});
-return {
-  data: usuario,
-  meta: {
-    total,
-    page,
-    limit,
-    totalPages: Math.ceil(total / limit),
-  },
+    }
+
+   );
+   const total =await this.usuarios.count({
+    where:{
+      isDeleted: !isActive,
+    }
+        
+   });
+   return {
+    data:usuario,
+    meta:{
+      total,
+      page,
+      limit,
+      totalPages:Math.ceil(total/limit),
+    },
+   };
   
-
-  };
-      
-
       }  catch(error: any){
       console.error('Error en finMany :',error);
       throw error;
     }
   }
-    
-  
 
-  async findOne(id: number) {
-    const usuario=await this .usuarios.findUnique({
-      where :{id},     
+  async findOne(id:number,cedula?:string ,correo?:string) {
+    const filters:any ={id};
+    if(cedula){
+      filters.cedula=cedula;
+    }
+    if(correo){
+    filters.correo=correo;
+    }
+    const usuario=await this.usuarios.findFirst({
+    where :filters,     
     })
-    if(!usuario|| usuario.isDeleted){
+    if(!usuario){
       throw new NotFoundException('no hay usuario con es id ')
     }
     return  usuario

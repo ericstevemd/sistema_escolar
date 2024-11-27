@@ -20,6 +20,6 @@ export class CreateUsuarioDto {
               // Puede ser enum en el futuro
     @IsBoolean()
     sesionIniciada :boolean
-    @IsBoolean()
+    @IsBoolean({ message:'isDeleted must be a boolean value'})
     isDeleted :boolean
 }
