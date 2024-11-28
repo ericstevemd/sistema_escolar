@@ -36,8 +36,8 @@ export class UsuarioController {
   }
 
   @Post('send-reset-password')
-  async sendResetPassword(@Body('cedula') cedula: string) {
-    return this.usuarioService.sendPasswordReset(cedula);
+  async sendResetPassword(@Body('correo') correo: string) {
+    return this.usuarioService.sendPasswordReset(correo);
   }
 
   @Post('reset-password')

@@ -111,7 +111,8 @@ const skip =(page -1)*limit;
 }}  
 
 
-async sendPasswordReset(email: string) {
+async sendPasswordReset(email : string) {
+  
   // Obtén el valor de JWT_SECRET
   const secret = this.configService.get<string>('JWT_SECRET');
   if (!secret) {
@@ -120,10 +121,17 @@ async sendPasswordReset(email: string) {
 
   // Genera el token
   const token = jwt.sign({ email }, secret, { expiresIn: '1h' });
+const randompart =token.substring(0,Math.floor(Math.random()*(7-5+1))+5);
+ 
+console.log(`Parte aleatoria del token generada: ${randompart}`);
+console.log(`correo que fue enviado : ${email}`)
 
-  console.log(`Token generado para ${email}: ${token}`);
-  return token;
+
+return randompart;
 
   // Aquí enviarías el token al correo electrónico
 }
+
+
+
 }
