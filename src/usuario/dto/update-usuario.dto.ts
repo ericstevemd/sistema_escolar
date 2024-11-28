@@ -6,22 +6,22 @@ import { Rol } from '@prisma/client';
 export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
 
 
-    @IsString()
-    @IsNotEmpty()
-    cedula  :string 
-    @IsString()  
-    @IsNotEmpty()    
-    correo   :string
-    @IsNotEmpty()
-    @IsString()    
-    password :string
+    // @IsString()
+    // @IsNotEmpty()
+    // cedula  :string 
+    // @IsString()  
+    // @IsNotEmpty()    
+    // correo   :string
+    // @IsNotEmpty()
+    // @IsString()    
+    // password :string
     
-    @IsNotEmpty()
+    // @IsNotEmpty()
     
-    rol: Rol
-              // Puede ser enum en el futuro
-    @IsBoolean()
-    sesionIniciada :boolean
+    // rol: Rol
+    //           // Puede ser enum en el futuro
+    // @IsBoolean()
+    // sesionIniciada :boolean
 
 
 }

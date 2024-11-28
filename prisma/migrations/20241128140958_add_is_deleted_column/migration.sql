@@ -11,6 +11,7 @@ CREATE TABLE "Usuarios" (
     "sesionIniciada" BOOLEAN NOT NULL DEFAULT false,
     "profesorId" INTEGER,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
+    "resetCode" TEXT,
 
     CONSTRAINT "Usuarios_pkey" PRIMARY KEY ("id")
 );

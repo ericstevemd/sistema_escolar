@@ -9,11 +9,12 @@ import { MateriasModule } from './materias/materias.module';
 import { ActividadModule } from './actividad/actividad.module';
 import { RendimientosModule } from './rendimientos/rendimientos.module';
 import { NotificacioModule  } from './notificacio/notificacio.module';
+import { EmailModule } from './email/email.module';
 
 
 
 @Module({
-  imports: [UsuarioModule,RepresentantesModule, EstudiantesModule, ProfesorModule, MateriasModule, ActividadModule, RendimientosModule, NotificacioModule],
+  imports: [UsuarioModule,RepresentantesModule, EstudiantesModule, ProfesorModule, MateriasModule, ActividadModule, RendimientosModule, NotificacioModule, EmailModule],
   controllers: [AppController],
   providers: [AppService],
 })

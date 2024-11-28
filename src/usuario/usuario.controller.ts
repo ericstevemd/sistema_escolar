@@ -1,6 +1,8 @@
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
+
+import * as jwt from 'jsonwebtoken';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
@@ -33,20 +35,20 @@ export class UsuarioController {
      return this.usuarioService.remove(+id);
   }
 
+  @Post('send-reset-password')
+  async sendResetPassword(@Body('cedula') cedula: string) {
+    return this.usuarioService.sendPasswordReset(cedula);
+  }
 
   @Post('reset-password')
-  async sendResetPasswordEmail(@Body('email') email: string) {
-    return this.usuarioService.sendPasswordResetEmail(email);
+  async resetPassword(@Query('token') token: string, @Body('newPassword') newPassword: string) {
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      await this.usuarioService.update(payload.id, { password: newPassword });
+      return { message: 'Contraseña actualizada con éxito' };
+    } catch (error) {
+      throw new InternalServerErrorException('Token inválido o expirado');
+    }
+  }
 
-
-}
-
-
-@Post('reset-password/confirm')
-async resetPassword(
-  @Body('code') code: string,
-  @Body('newPassword') newPassword: string,
-) {
-  return this.usuarioService.resetPassword(code, newPassword);
-}
 }
