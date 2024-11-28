@@ -10,11 +10,25 @@ import { ActividadModule } from './actividad/actividad.module';
 import { RendimientosModule } from './rendimientos/rendimientos.module';
 import { NotificacioModule  } from './notificacio/notificacio.module';
 import { EmailModule } from './email/email.module';
+import { ConfigModule  ,ConfigService} from '@nestjs/config';
 
 
 
 @Module({
-  imports: [UsuarioModule,RepresentantesModule, EstudiantesModule, ProfesorModule, MateriasModule, ActividadModule, RendimientosModule, NotificacioModule, EmailModule],
+  imports: [
+ConfigModule.forRoot({
+  isGlobal:true,
+}),    
+    UsuarioModule,
+    RepresentantesModule,
+     EstudiantesModule, 
+     ProfesorModule,
+      MateriasModule,
+       ActividadModule,
+        RendimientosModule,
+         NotificacioModule,
+     EmailModule 
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

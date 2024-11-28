@@ -6,11 +6,13 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaClient } from '@prisma/client';
 import { EmailService } from 'src/email/email.service';
+import { ConfigService } from '@nestjs/config';
+
 
 @Injectable()
 export class UsuarioService extends PrismaClient implements OnModuleInit{
   
-  constructor (private readonly emailservice:EmailService){
+  constructor (private readonly configService:ConfigService){
     super();
    }
   async onModuleInit() {
@@ -109,31 +111,19 @@ const skip =(page -1)*limit;
 }}  
 
 
-async sendPasswordReset(cedula: string) {
-  const usuario = await this.usuarios.findFirst({ where: { cedula } });
-
-  if (!usuario) {
-    throw new NotFoundException(`No se encontró un usuario con la cédula ${cedula}`);
+async sendPasswordReset(email: string) {
+  // Obtén el valor de JWT_SECRET
+  const secret = this.configService.get<string>('JWT_SECRET');
+  if (!secret) {
+    throw new Error('JWT_SECRET no está configurado');
   }
 
-  // Generar el token JWT
-  const token = jwt.sign({ id: usuario.id, email: usuario.correo }, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
+  // Genera el token
+  const token = jwt.sign({ email }, secret, { expiresIn: '1h' });
 
-  // Crear el enlace de restablecimiento
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+  console.log(`Token generado para ${email}: ${token}`);
+  return token;
 
-  // Enviar el correo
-  await this.emailservice.sendPasswordResetEmail(usuario.correo, resetLink);
-
-  return { message: 'Correo de restablecimiento enviado con éxito' };
+  // Aquí enviarías el token al correo electrónico
 }
 }
-
-
-
-
-
-    
-  
