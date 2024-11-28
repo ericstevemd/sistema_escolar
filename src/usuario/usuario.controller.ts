@@ -18,9 +18,9 @@ export class UsuarioController {
     return  await this.usuarioService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usuarioService.findOne(+id);
+  @Get(':cedula')
+  async findOne(@Param('cedula ') cedula: string) {
+    return await this.usuarioService.findOne(cedula);
   } 
     
   @Patch(':id')
@@ -32,4 +32,21 @@ export class UsuarioController {
   remove(@Param('id') id: string) {
      return this.usuarioService.remove(+id);
   }
+
+
+  @Post('reset-password')
+  async sendResetPasswordEmail(@Body('email') email: string) {
+    return this.usuarioService.sendPasswordResetEmail(email);
+
+
+}
+
+
+@Post('reset-password/confirm')
+async resetPassword(
+  @Body('code') code: string,
+  @Body('newPassword') newPassword: string,
+) {
+  return this.usuarioService.resetPassword(code, newPassword);
+}
 }

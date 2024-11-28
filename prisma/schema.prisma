@@ -24,6 +24,7 @@ model Usuarios {
   profesor        Profesor?   @relation(fields: [profesorId], references: [id])
   profesorId      Int?
   isDeleted      Boolean @default(false)
+  resetCode   String? 
   notificaciones  Notificacion[]
   
 

@@ -1,4 +1,6 @@
 
+import * as jwt from 'jsonwebtoken';
+
 import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -6,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class UsuarioService extends PrismaClient implements OnModuleInit{
+  emailService: any;
   async onModuleInit() {
    await this.$connect();
   }
@@ -53,13 +56,15 @@ const skip =(page -1)*limit;
     }
   }
 
-  async findOne(id:number,cedula?:string ,correo?:string) {
+  async findOne(cedula:string) {
     
     const usuario=await this.usuarios.findFirst({
-    where :{id},     
-    })
+    where :{ 
+      cedula
+  },     
+    });
     if(!usuario){
-      throw new NotFoundException('no hay usuario con es id ')
+      throw new NotFoundException(`No se encontró un usuario con la cédula ${cedula}`)
     }
     return  usuario
   }
@@ -88,4 +93,49 @@ const skip =(page -1)*limit;
       data: { isDeleted: true }, // Marcamos como eliminado
     });
   }
+
+  async generateResetCode(email: string): Promise<string> {
+    const usuario = await this.usuarios.findUnique({ where: { correo: email } });
+
+    if (!usuario) {
+      throw new NotFoundException('No se encontró un usuario con ese correo');
+    }
+
+    // Generar un código único y temporal (válido por 15 minutos)
+    const resetCode = jwt.sign({ id: usuario.id }, 'tu-secreto', { expiresIn: '15m' });
+
+    // Opcional: Guardar el código en la base de datos para validaciones futuras
+    await this.usuarios.update({
+      where: { id: usuario.id },
+      data: { resetCode },
+    });
+
+    return resetCode;
+  }
+  async sendPasswordResetEmail(email: string) {
+    const resetCode = await this.generateResetCode(email);
+  
+    // Llamar al servicio de correo
+    await this.emailService.sendResetPasswordEmail(email, resetCode);
+  
+    return { message: 'Correo de restablecimiento enviado exitosamente' };
+  }
+  async resetPassword(code: string, newPassword: string) {
+  try {
+    const decoded = jwt.verify(code, 'tu-secreto');
+    const usuarioId = decoded.id;
+
+    // Actualizar la contraseña en la base de datos (asegúrate de cifrarla)
+    return this.usuarios.update({
+      where: { id: usuarioId },
+      data: { password: newPassword, resetCode: null }, // Limpiar el código usado
+    });
+  } catch (error) {
+    throw new NotFoundException('El código es inválido o ha expirado');
+  }
+}
+
+
+
+
 }
