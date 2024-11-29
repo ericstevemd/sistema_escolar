@@ -165,9 +165,8 @@ async login(cedula:string,password:string ){
 
   
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  console.log( password)
-  console.log( user.password)
-  console.log( isPasswordValid)
+
+
   if (isPasswordValid) {
  
     throw new UnauthorizedException('Credenciales incorrectas');
