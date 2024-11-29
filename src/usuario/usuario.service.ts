@@ -152,11 +152,12 @@ async login(cedula:string,password:string ){
     throw new BadRequestException('Cédula y contraseña son requeridas.');
   }
   const user=await this.usuarios.findFirst({
-    where: { cedula,password, isDeleted:false
+    where: { cedula, isDeleted:false
     },
 
 
   });
+  console.log('Usuario encontrado:', user);
   if(!user){
     console.error( `Usuario no encontrado para cédula: ${cedula}` )
     throw new NotFoundException(' usuario no encontrado');
@@ -167,7 +168,7 @@ async login(cedula:string,password:string ){
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
 
-  if (isPasswordValid) {
+  if (!isPasswordValid) {
  
     throw new UnauthorizedException('Credenciales incorrectas');
   }
