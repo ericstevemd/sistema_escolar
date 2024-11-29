@@ -7,23 +7,30 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PrismaClient } from '@prisma/client';
 import { EmailService } from 'src/email/email.service';
 import { ConfigService } from '@nestjs/config';
+import { env } from 'process';
 
 
 @Injectable()
 export class UsuarioService extends PrismaClient implements OnModuleInit{
   
-  constructor (private readonly configService:ConfigService){
+  constructor (private readonly configService:ConfigService,){
     super();
+    
    }
   async onModuleInit() {
    await this.$connect();
   }
 
   async create(createUsuarioDto: CreateUsuarioDto) {
-    const hashedPassword = await bcrypt.hash(createUsuarioDto.password, 10); // Cifra la contraseña
+    const hashedPassword = await bcrypt.hash(createUsuarioDto.password, 5); // Cifra la contraseña
   createUsuarioDto.password = hashedPassword;
+  
+
+  
     return this.usuarios.create({
       data:createUsuarioDto,
+
+      
     });
   }
 
@@ -116,7 +123,7 @@ const skip =(page -1)*limit;
 async sendPasswordReset(email : string) {
   
   // Obtén el valor de JWT_SECRET
-  const secret = this.configService.get<string>('JWT_SECRET');
+  const secret = this.configService.get<string>(env.JWT_SECRET); 
   if (!secret) {
     throw new Error('JWT_SECRET no está configurado');
   }
@@ -145,7 +152,8 @@ async login(cedula:string,password:string ){
     throw new BadRequestException('Cédula y contraseña son requeridas.');
   }
   const user=await this.usuarios.findFirst({
-    where: { cedula, isDeleted:false},
+    where: { cedula,password, isDeleted:false
+    },
 
 
   });
@@ -153,31 +161,28 @@ async login(cedula:string,password:string ){
     console.error( `Usuario no encontrado para cédula: ${cedula}` )
     throw new NotFoundException(' usuario no encontrado');
   }
-  console.log('Contraseña proporcionada:', password);
-  console.log('Hash almacenado en la base de datos:', user.password);
+
 
   
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
+  console.log( password)
+  console.log( user.password)
+  console.log( isPasswordValid)
+  if (isPasswordValid) {
+ 
     throw new UnauthorizedException('Credenciales incorrectas');
   }
-
-
-  const secret = this.configService.get<string>('JWT_SECRET');
+ const secret = this.configService.get<string>('JWT_SECRET');
   if (!secret) {
+ throw new InternalServerErrorException('JWT_SECRET no está configurado');
+ }
 
-    throw new InternalServerErrorException('JWT_SECRET no está configurado');
-  }
-console.error(`Fallo en la validación de contraseña para cédula: ${cedula}`);
-  const token = jwt.sign({ id: user.id, cedula: user.cedula }, secret, {
-    expiresIn: '1h',
-  });
-
+ const token = jwt.sign({ id: user.id, cedula: user.cedula }, secret, {
+   expiresIn: '1h',
+ });
 
     console.log(`Inicio de sesión exitoso para usuario: ${user.cedula}`)
         return { message: 'Inicio de sesión exitoso.', token }
-     
-
 };
 
 

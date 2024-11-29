@@ -21,7 +21,7 @@ export class UsuarioController {
   }
 
   @Get(':cedula')
-  async findOne(@Param('cedula ') cedula: string) {
+  async findOne(@Param('cedula') cedula: string) {
     return await this.usuarioService.findOne(cedula);
   } 
     
@@ -53,7 +53,7 @@ export class UsuarioController {
   }
 
   @Post('login')
-  async login(@Body() loginDto: { cedula : string; password: string }) {
-    return this.usuarioService.login(loginDto.cedula , loginDto.password);
+  async login(@Body() CreateUsuarioDto: { cedula : string; password: string }) {
+    return this.usuarioService.login(CreateUsuarioDto.cedula , CreateUsuarioDto.password);
   }
 }
