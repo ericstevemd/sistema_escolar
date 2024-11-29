@@ -49,6 +49,11 @@ export class UsuarioController {
     } catch (error) {
       throw new InternalServerErrorException('Token inválido o expirado');
     }
+
   }
 
+  @Post('login')
+  async login(@Body() loginDto: { cedula : string; password: string }) {
+    return this.usuarioService.login(loginDto.cedula , loginDto.password);
+  }
 }

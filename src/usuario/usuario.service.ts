@@ -1,6 +1,6 @@
 
 import * as jwt from 'jsonwebtoken';
-
+import * as bcrypt from 'bcryptjs'
 import { Injectable, InternalServerErrorException, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -132,6 +132,36 @@ return randompart;
   // Aquí enviarías el token al correo electrónico
 }
 
+
+
+
+
+// login 
+async login(cedula:string,password:string ){
+  const user=await this.usuarios.findFirst({
+    where: { cedula, isDeleted:false},
+
+
+  });
+  if(!user){
+    throw new NotFoundException(' usuario no encontrado');
+  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    throw new InternalServerErrorException('Credenciales incorrectas');
+  }
+  const secret = this.configService.get<string>('JWT_SECRET');
+  if (!secret) {
+    throw new Error('JWT_SECRET no está configurado');
+  }
+
+  const token = jwt.sign({ id: user.id, cedula: user.cedula }, secret, {
+    expiresIn: '1h',
+  });
+
+  return { token };
+
+}
 
 
 }
