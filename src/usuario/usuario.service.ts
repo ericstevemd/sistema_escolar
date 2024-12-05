@@ -162,10 +162,7 @@ async login(cedula:string,password:string ){
     console.error( `Usuario no encontrado para cédula: ${cedula}` )
     throw new NotFoundException(' usuario no encontrado');
   }
-
-
-  
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+   const isPasswordValid = await bcrypt.compare(password, user.password);
 
 
   if (!isPasswordValid) {
@@ -182,8 +179,26 @@ async login(cedula:string,password:string ){
  });
 
     console.log(`Inicio de sesión exitoso para usuario: ${user.cedula}`)
-        return { message: 'Inicio de sesión exitoso.', token }
+        return { message: 'Inicio de sesión exitoso.', token
+          ,cedula:user.cedula,
+          email:user.correo
+          ,userType: user.rol
+         }
 };
 
+async getProfile(userId: number) {
+  const user = await this.usuarios.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new NotFoundException(`Usuario no encontrado con el id ${userId}`);
+  }
+
+  return {
+    cedula: user.cedula,
+    email: user.correo,
+  };
+}
 
 }

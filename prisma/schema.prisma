@@ -10,7 +10,7 @@ enum Rol {
   ADMIN
   PROFESOR
   REPRESENTANTE
-  ESTUDIANTE
+  ESTUDIANTE //pendiente 
 }
 
 

@@ -1,10 +1,11 @@
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, BadRequestException, InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 
 import * as jwt from 'jsonwebtoken';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -40,7 +41,7 @@ export class UsuarioController {
     return this.usuarioService.sendPasswordReset(correo);
   }
 
-  @Post('reset-password')
+ /*  @Post('reset-password')
   async resetPassword(@Query('token') token: string, @Body('newPassword') newPassword: string) {
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -50,10 +51,20 @@ export class UsuarioController {
       throw new InternalServerErrorException('Token inválido o expirado');
     }
 
-  }
+  } */
 
   @Post('login')
   async login(@Body() CreateUsuarioDto: { cedula : string; password: string }) {
     return this.usuarioService.login(CreateUsuarioDto.cedula , CreateUsuarioDto.password);
   }
+
+
+  @Get('profile/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async getUserProfile(@Param('id') userId: number) {
+    return { user: await this.usuarioService.getProfile(userId) };
+  }
+
 }
+  
+
