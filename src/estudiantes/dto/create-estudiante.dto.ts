@@ -29,7 +29,7 @@ export class CreateEstudianteDto {
         @IsString()
         tipoSangre             
         @IsNumber()        
-        representanteId        
+        representanteId   ?:number     
                
 
 
