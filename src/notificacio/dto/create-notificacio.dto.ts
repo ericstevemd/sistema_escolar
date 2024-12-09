@@ -8,7 +8,8 @@ export class CreateNotificacioDto {
     @IsString()
     mensaje 
 @IsDate()
-    fecha      
-   
+    fecha   
+    @IsString()   
+    tipo
   
 }

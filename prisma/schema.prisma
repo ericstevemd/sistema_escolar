@@ -67,6 +67,10 @@ model Estudiantes {
   representanteId        Int?
   representante          Representantes? @relation(fields: [representanteId], references: [id])
   rendimiento            Rendimientos[]
+
+  EstudianteAnio EstudianteAnio[]
+
+  HistorialAcademico HistorialAcademico[]
 }
 
 model Profesor {
@@ -117,5 +121,40 @@ model Notificacion {
   usuarioId  Int
   mensaje    String
   fecha      DateTime
+  tipo        String 
   usuario    Usuarios @relation(fields: [usuarioId], references: [id])
+}
+model AnioLectivo {
+  id               Int             @id @default(autoincrement())
+  nombre           String          // Ejemplo: "2023-2024"
+  fechaInicio      DateTime
+  fechaFin         DateTime
+  estudiantes      EstudianteAnio[] // Relación con estudiantes en este año lectivo
+  isActive         Boolean         @default(false) // Indica si es el año lectivo actual
+
+  HistorialAcademico HistorialAcademico[]
+}
+
+model EstudianteAnio {
+  id               Int             @id @default(autoincrement())
+  estudianteId     Int
+  anioLectivoId    Int
+  curso            String          // Curso asignado al estudiante durante este año lectivo
+  promedio         Float?          // Promedio del estudiante en el año
+  estado           String          // Ejemplo: "Aprobado", "Reprobado"
+  estudiante       Estudiantes     @relation(fields: [estudianteId], references: [id])
+  anioLectivo      AnioLectivo     @relation(fields: [anioLectivoId], references: [id])
+}
+model HistorialAcademico {
+  id             Int             @id @default(autoincrement())
+  estudianteId   Int
+  anioLectivoId  Int
+  curso          String          // Ejemplo: "Quinto Grado"
+  estado         String          // Ejemplo: "Aprobado", "Reprobado"
+  promedio       Float?          // Promedio final del estudiante en el curso
+  fechaRegistro  DateTime        @default(now()) // Fecha en que se registró el resultado
+  observaciones  String?         // Notas adicionales sobre el desempeño del estudiante
+
+  estudiante     Estudiantes     @relation(fields: [estudianteId], references: [id])
+  anioLectivo    AnioLectivo     @relation(fields: [anioLectivoId], references: [id])
 }

@@ -111,8 +111,46 @@ CREATE TABLE "Notificacion" (
     "usuarioId" INTEGER NOT NULL,
     "mensaje" TEXT NOT NULL,
     "fecha" TIMESTAMP(3) NOT NULL,
+    "tipo" TEXT NOT NULL,
 
     CONSTRAINT "Notificacion_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AnioLectivo" (
+    "id" SERIAL NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "fechaInicio" TIMESTAMP(3) NOT NULL,
+    "fechaFin" TIMESTAMP(3) NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "AnioLectivo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EstudianteAnio" (
+    "id" SERIAL NOT NULL,
+    "estudianteId" INTEGER NOT NULL,
+    "anioLectivoId" INTEGER NOT NULL,
+    "curso" TEXT NOT NULL,
+    "promedio" DOUBLE PRECISION,
+    "estado" TEXT NOT NULL,
+
+    CONSTRAINT "EstudianteAnio_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HistorialAcademico" (
+    "id" SERIAL NOT NULL,
+    "estudianteId" INTEGER NOT NULL,
+    "anioLectivoId" INTEGER NOT NULL,
+    "curso" TEXT NOT NULL,
+    "estado" TEXT NOT NULL,
+    "promedio" DOUBLE PRECISION,
+    "fechaRegistro" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "observaciones" TEXT,
+
+    CONSTRAINT "HistorialAcademico_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -153,3 +191,15 @@ ALTER TABLE "Rendimientos" ADD CONSTRAINT "Rendimientos_estudianteId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "Notificacion" ADD CONSTRAINT "Notificacion_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuarios"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EstudianteAnio" ADD CONSTRAINT "EstudianteAnio_estudianteId_fkey" FOREIGN KEY ("estudianteId") REFERENCES "Estudiantes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EstudianteAnio" ADD CONSTRAINT "EstudianteAnio_anioLectivoId_fkey" FOREIGN KEY ("anioLectivoId") REFERENCES "AnioLectivo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HistorialAcademico" ADD CONSTRAINT "HistorialAcademico_estudianteId_fkey" FOREIGN KEY ("estudianteId") REFERENCES "Estudiantes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HistorialAcademico" ADD CONSTRAINT "HistorialAcademico_anioLectivoId_fkey" FOREIGN KEY ("anioLectivoId") REFERENCES "AnioLectivo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
