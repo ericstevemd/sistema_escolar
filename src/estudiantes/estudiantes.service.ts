@@ -29,15 +29,18 @@ export class EstudiantesService extends PrismaClient implements OnModuleInit {
     })
     return Estudiante
   }
-
+  
   async update(id: number, updateEstudianteDto: UpdateEstudianteDto) {
-    const estudiantes= await this.estudiantes.findUnique({
-      where:{id}
+    const estudiante = await this.estudiantes.findUnique({
+      where: { id },
     });
-    if(!estudiantes){
-      throw new NotFoundException("El id que estya buscando no se encuentra")
+    if (!estudiante) {
+      throw new NotFoundException("El id que está buscando no se encuentra");
     }
-    return estudiantes 
+    return await this.estudiantes.update({
+      where: { id },
+      data: updateEstudianteDto,
+    });
   }
   
   
