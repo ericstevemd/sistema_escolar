@@ -1,36 +1,39 @@
-import { Type } from "class-transformer"
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { Type } from "class-transformer";
+import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateEstudianteDto {
 
-   
-       @IsString()                     
-        nombre 
-        @IsString()                
-        cedula
-        @IsString()                 
-        genero 
-        @IsString()               
-        nacionalidad
+    @IsString()                     
+    nombre: string;
+
+    @IsString()                
+    cedula: string;
+
+    @IsString()                  
+    genero: string;
+
+    @IsString()               
+    nacionalidad: string;
         
-        @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date) // Transforma el valor en una instancia de Date
- 
-        fechaNacimiento :Date
-        @IsString()
-        curso
-        @IsNumber()     
-        edad       
-        @IsBoolean()            
-        problemasDiscapacidad  
-        @IsString()
-        problemasSalud
-        @IsString()
-        tipoSangre             
-        @IsNumber()        
-        representanteId   ?:number     
-               
+    @IsDateString()
+    fechaNacimiento: string;
 
+    @IsString()
+    curso: string;
 
+    @IsNumber()     
+    edad: number;
+
+    @IsBoolean()            
+    problemasDiscapacidad: boolean;
+
+    @IsString()
+    problemasSalud: string;
+
+    @IsString()
+    tipoSangre: string;
+
+    @IsOptional() // Marca como opcional, ya que no es obligatorio
+    @IsNumber()        
+    representanteId?: number;   
 }

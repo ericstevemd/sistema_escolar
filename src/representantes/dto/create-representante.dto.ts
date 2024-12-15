@@ -1,35 +1,63 @@
-import { IsNumber, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsString, IsEmail, IsPhoneNumber } from "class-validator";
 
 export class CreateRepresentanteDto {
 
-    @IsString()             
-    nombre :string 
-    @IsString()                
-    apellido:string 
-    @IsString()
-    cedula :string 
-    @IsString()               
-    nacionalidad :string 
-    @IsString()          
-    ciudad :string 
-    @IsString()               
-    correo  :string
-    @IsString()               
-    direccion_Domicilio :string  
-    @IsString()
-    foto  :string
-    @IsString()                
-    numeroCelular1:string 
-    @IsString()        
-    numeroCelular2:string
-    @IsString()         
-    numeroCelular3:string
-    @IsString()        
-    genero   :string 
-    @IsNumber()
-    cantidadRepresentados :number 
-    @IsString()           
-    personasNoAutorizadas :string 
+  @IsString()             
+  @IsNotEmpty()
+  nombre: string;
 
+  @IsString()                
+  @IsNotEmpty()
+  apellido: string;
 
+  @IsString() 
+  @IsNotEmpty()
+  cedula: string; 
+
+  @IsString()               
+  @IsNotEmpty()
+  nacionalidad: string;
+
+  @IsString()          
+  @IsNotEmpty()
+  ciudad: string;
+
+  @IsEmail()                
+  @IsNotEmpty()
+  correo: string;
+
+  @IsString()               
+  @IsNotEmpty()
+  direccion_Domicilio: string;
+
+  @IsString()  
+  @IsNotEmpty()
+  foto: string;
+
+  @IsString()  
+  @IsNotEmpty()
+           // Valida que el número sea un teléfono válido
+  numeroCelular1: string;
+
+  @IsString()        
+  @IsNotEmpty()
+  // Valida que el número sea un teléfono válido
+  numeroCelular2: string;
+
+  @IsString()         
+  @IsNotEmpty()
+               // Valida que el número sea un teléfono válido
+  numeroCelular3: string;
+
+  @IsString()        
+  @IsNotEmpty()
+  genero: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  cantidadRepresentados: number;
+
+  @IsString()           
+  @IsNotEmpty()
+  personasNoAutorizadas: string;
 }
