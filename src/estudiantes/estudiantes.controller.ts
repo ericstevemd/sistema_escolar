@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { EstudiantesService } from './estudiantes.service';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
@@ -17,9 +17,9 @@ export class EstudiantesController {
     return this.estudiantesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.estudiantesService.findOne(+id);
+  @Get(':nombre')
+ async findOne(@Param('nombre') nombre: string) {
+ return this.estudiantesService.findOne(nombre );
   }
 
   @Patch(':id')

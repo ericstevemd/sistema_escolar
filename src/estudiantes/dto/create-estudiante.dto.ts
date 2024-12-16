@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsDateString, IsISO8601, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateEstudianteDto {
 
@@ -14,9 +14,9 @@ export class CreateEstudianteDto {
 
     @IsString()               
     nacionalidad: string;
-        
+    @IsISO8601()
     @IsDateString()
-    fechaNacimiento: string;
+    fechaNacimiento: Date;
 
     @IsString()
     curso: string;

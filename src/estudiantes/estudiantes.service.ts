@@ -1,6 +1,6 @@
 
 
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit, Query } from '@nestjs/common';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
 import { PrismaClient } from '@prisma/client';
@@ -22,12 +22,21 @@ export class EstudiantesService extends PrismaClient implements OnModuleInit {
     return this.estudiantes.findMany();
   }
 
-  async findOne(id: number) {
-    
-    const Estudiante =await this.estudiantes.findUnique({
-      where:{id},
-    })
-    return Estudiante
+  async findOne(nombre :string ) {
+  
+     
+    // Realiza la búsqueda con Prisma
+    const estudiantes = await this.estudiantes.findMany({
+      where: 
+      { nombre}
+  
+    });
+  
+    if (!estudiantes || estudiantes.length === 0) {
+      throw new Error('No se encontraron estudiantes con los criterios proporcionados.');
+    }
+  console.log(estudiantes);
+    return estudiantes;
   }
   
   async update(id: number, updateEstudianteDto: UpdateEstudianteDto) {
