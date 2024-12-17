@@ -17,10 +17,42 @@ export class EstudiantesService extends PrismaClient implements OnModuleInit {
       data:createEstudianteDto
     })
   }
+   async findAll() {
+    
+return await this.estudiantes.findMany()
+    } 
 
-  findAll() {
-    return this.estudiantes.findMany();
-  }
+  /* async findAll(page: number=1 ,limit: number=10) {
+    try{
+      const skip =(page -1)*limit;
+      
+         const usuario= await this.usuarios.findMany(
+          {
+            where:{
+          
+            },
+            skip:skip,
+            take:limit,
+          }
+      
+         );
+         const total =await this.usuarios.count();
+         return {
+          data:usuario,
+          meta:{
+            total,
+            page,
+            limit,
+            totalPages:Math.ceil(total/limit),
+          },
+         };
+        
+            }  catch(error: any){
+            console.error('Error en finMany :',error);
+            throw error;
+          }
+        } */
+
 
   async findOne(nombre :string ) {
   
