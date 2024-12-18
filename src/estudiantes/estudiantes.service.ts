@@ -3,7 +3,7 @@
 import { Injectable, NotFoundException, OnModuleInit, Query } from '@nestjs/common';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class EstudiantesService extends PrismaClient implements OnModuleInit {
@@ -11,18 +11,28 @@ export class EstudiantesService extends PrismaClient implements OnModuleInit {
      await this.$connect;
   }
   async create(createEstudianteDto: CreateEstudianteDto) {
-   
-   
+   try{
+  
     return await this.estudiantes.create({
       data:createEstudianteDto
-    })
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      throw new Error('La cédula ya existe en la base de datos.');
+    }
+    throw error;
   }
-/*    async findAll() {
+}
+  
+   async findAll() {
     
 return await this.estudiantes.findMany()
-    }  */
+    }  
 
-  async findAll(page: number=1 ,limit: number=10) {
+ /* async findAll(page: number=1 ,limit: number=10) {
     try{
       const skip =(page -1)*limit;
       
@@ -52,7 +62,7 @@ return await this.estudiantes.findMany()
             throw error;
           }
         } 
-
+*/
 
   async findOne(nombre :string ) {
   
