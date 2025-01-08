@@ -21,11 +21,12 @@ model Usuarios {
   password        String
   rol             Rol   // Puede ser enum en el futuro
   sesionIniciada  Boolean  @default(false)
-  profesor        Profesor?   @relation(fields: [profesorId], references: [id])
+  
   profesorId      Int?
   isDeleted      Boolean @default(false)
   resetCode   String? 
   notificaciones  Notificacion[]
+  profesores Profesor[]
   
 
   Representantes Representantes[]
@@ -78,8 +79,7 @@ model Profesor {
   nombre    String
   cedula    String      @unique
   actividades Actividad[]
-
-  Usuarios Usuarios[]
+Usuario   Usuarios   @relation(fields: [id], references: [id])
 }
 
 model Cursos {

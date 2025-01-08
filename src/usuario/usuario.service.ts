@@ -1,3 +1,4 @@
+import { Profesor } from './../../node_modules/.prisma/client/index.d';
 
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs'
@@ -75,8 +76,8 @@ const skip =(page -1)*limit;
     
     const usuario=await this.usuarios.findFirst({
     where :{ 
-      cedula
-  },     
+      cedula ,isDeleted: false
+  }, include:{ profesores: true},     
     });
     if(!usuario){
       throw new NotFoundException(`No se encontró un usuario con la cédula ${cedula}`)
@@ -153,7 +154,7 @@ async login(cedula:string,password:string ){
   }
   const user=await this.usuarios.findFirst({
     where: { cedula, isDeleted:false
-    },
+    }, include:{profesores :true},
 
 
   });
@@ -177,12 +178,17 @@ async login(cedula:string,password:string ){
  const token = jwt.sign({ id: user.id, cedula: user.cedula }, secret, {
    expiresIn: '1h',
  });
-
+ // Verifica si es profesor
+ const isProfessor = user.profesores.length > 0;
     console.log(`Inicio de sesión exitoso para usuario: ${user.cedula}`)
         return { message: 'Inicio de sesión exitoso.', token
           ,cedula:user.cedula,
           email:user.correo
-          ,userType: user.rol
+          ,userType: user.rol,
+          isProfessor,
+    profesorInfo: isProfessor ? user.profesores : null,
+
+     
          }
 };
 
