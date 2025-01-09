@@ -11,6 +11,7 @@ import { RendimientosModule } from './rendimientos/rendimientos.module';
 import { NotificacioModule  } from './notificacio/notificacio.module';
 import { EmailModule } from './email/email.module';
 import { ConfigModule  ,ConfigService} from '@nestjs/config';
+import { CursoModule } from './curso/curso.module';
 
 
 
@@ -27,7 +28,8 @@ ConfigModule.forRoot({
        ActividadModule,
         RendimientosModule,
          NotificacioModule,
-     EmailModule 
+     EmailModule,
+     CursoModule 
   ],
   controllers: [AppController],
   providers: [AppService],

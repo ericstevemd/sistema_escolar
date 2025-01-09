@@ -82,9 +82,11 @@ model Profesor {
 Usuario   Usuarios   @relation(fields: [id], references: [id])
 }
 
-model Cursos {
+model Curso {
   id           Int        @id @default(autoincrement())
   nombreCurso  String
+  descripcion String
+  duracion  Int 
   actividades  Actividad[]
 }
 
@@ -103,7 +105,7 @@ model Actividad {
   cursoId      Int
   profesorId   Int?
   materia      Materias     @relation(fields: [materiaId], references: [id])
-  curso        Cursos       @relation(fields: [cursoId], references: [id])
+  curso        Curso      @relation(fields: [cursoId], references: [id])
   profesor     Profesor?   @relation(fields: [profesorId], references: [id])
 }
 
