@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ProfesorService  extends PrismaClient implements OnModuleInit{
+  cursoService: any;
   async onModuleInit() {
     await this.$connect();
   }
@@ -14,7 +15,7 @@ export class ProfesorService  extends PrismaClient implements OnModuleInit{
     })
   }
 
-  findAll() {
+ async findAll() {
     return this.profesor.findMany();
   }
 
@@ -56,4 +57,29 @@ export class ProfesorService  extends PrismaClient implements OnModuleInit{
    }) ;
     return  {nessage : `PROFESOR con ID ${id} eliminado correctamente`};
   }
+
+
+  async listarCursosPorProfesor(profesorId: number) {
+    return this.cursoService.findAll(); 
+}
+
+
+
+async findProfesorWithCursos(profesorId: number) {
+  const profesor = await this.profesor.findUnique({
+    where: { id: profesorId },
+    include: {
+      cursos: true, // Incluye los cursos relacionados
+    },
+  });
+
+  if (!profesor) {
+    throw new NotFoundException(`El profesor con ID ${profesorId} no fue encontrado`);
+  }
+
+  return profesor;
+}
+
+
+
 }

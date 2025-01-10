@@ -15,6 +15,8 @@ export class CreateCursoDto {
   readonly descripcion: string;
 
   @IsNumber()
+  profesorId : number;
+  @IsNumber()
   readonly duracion: number; // duración en horas
 }
 

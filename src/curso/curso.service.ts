@@ -9,6 +9,9 @@ export class CursoService  extends PrismaClient implements OnModuleInit  {
   async onModuleInit() {
    await this.$connect();
   }
+
+
+
  async create(createCursoDto: CreateCursoDto) {
     return await this.curso.create({
       data :createCursoDto

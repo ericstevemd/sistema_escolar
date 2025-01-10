@@ -79,6 +79,7 @@ model Profesor {
   nombre    String
   cedula    String      @unique
   actividades Actividad[]
+  cursos   Curso[]
 Usuario   Usuarios   @relation(fields: [id], references: [id])
 }
 
@@ -87,7 +88,11 @@ model Curso {
   nombreCurso  String
   descripcion String
   duracion  Int 
+  profesorId Int
   actividades  Actividad[]
+ profesor    Profesor  @relation(fields: [profesorId], references: [id])
+
+ 
 }
 
 model Materias {
