@@ -80,6 +80,20 @@ async findProfesorWithCursos(profesorId: number) {
   return profesor;
 }
 
+async findProfesorWithMaterias(profesorId: number) {
+  const profesor = await this.profesor.findUnique({
+    where: { id: profesorId },
+    include: {
+      Materias: true, // Incluye las materias relacionadas
+    },
+  });
+
+  if (!profesor) {
+    throw new NotFoundException(`El profesor con ID ${profesorId} no fue encontrado`);
+  }
+
+  return profesor;
+}
 
 
 }

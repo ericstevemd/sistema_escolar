@@ -58,4 +58,10 @@ export class ProfesorController {
     
 
     }
+
+    @Get(':id/materias')
+async getProfesorWithMaterias(@Param('id') id: number) {
+  return this.profesorService.findProfesorWithMaterias(+id);
+}
+
 }

@@ -50,4 +50,13 @@ await this.$connect();
     });
     return { message: `la materia  con Id ${id} elminida correctamente `} 
   }
+
+  async findMateriasPorProfesor(profesorId: number) {
+    return this.materias.findMany({
+      where: { profesorId },
+    });
+  }
+  
+
+
 }
