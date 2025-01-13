@@ -59,4 +59,11 @@ where :{id}
     return  {nessage : `PROFESOR con ID ${id} eliminado correctamente`};
   }
 
+
+  async findnovedadesPorProfesor(profesorId: number) {
+    return this.novedades.findMany({
+      where: { profesorId },
+    });
+  }
+  
 }

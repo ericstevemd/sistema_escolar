@@ -1,3 +1,4 @@
+
 import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateProfesorDto } from './dto/create-profesor.dto';
 import { UpdateProfesorDto } from './dto/update-profesor.dto';
@@ -5,9 +6,7 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ProfesorService  extends PrismaClient implements OnModuleInit{
-  findProfesorWithNovedades(arg0: number) {
-    throw new Error('Method not implemented.');
-  }
+   
   cursoService: any;
   async onModuleInit() {
     await this.$connect();
@@ -97,6 +96,25 @@ async findProfesorWithMaterias(profesorId: number) {
 
   return profesor;
 }
+
+async findProfesorWithNovedades(profesorId: number) {
+  const profesor = await this.profesor.findUnique({
+    where: { id: profesorId },
+    include: {
+      novedades: true, // Incluye las novedades relacionadas
+    },
+  });
+
+  if (!profesor) {
+    throw new NotFoundException(`El profesor con ID ${profesorId} no fue encontrado`);
+  }
+
+  return profesor;
+} catch (error) {
+  console.error('Error al buscar profesor:', error);
+  throw error;
+}
+
 
 
 }

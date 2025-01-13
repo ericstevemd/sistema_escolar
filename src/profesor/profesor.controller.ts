@@ -61,7 +61,7 @@ export class ProfesorController {
 async getProfesorWithMaterias(@Param('id') id: number) {
   return this.profesorService.findProfesorWithMaterias(+id);
 }
-@Get(':id/materias')
+@Get(':id/novedades')
 async getProfesorWithNovedades(@Param('id') id: number) {
   return this.profesorService.findProfesorWithNovedades(+id);
 }

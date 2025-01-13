@@ -66,17 +66,32 @@ CREATE TABLE "Profesor" (
 );
 
 -- CreateTable
-CREATE TABLE "Cursos" (
+CREATE TABLE "Novedades" (
+    "id" SERIAL NOT NULL,
+    "tipo_novedade" TEXT NOT NULL,
+    "fecha" TIMESTAMP(3) NOT NULL,
+    "profesorId" INTEGER NOT NULL,
+    "descricion" TEXT NOT NULL,
+
+    CONSTRAINT "Novedades_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Curso" (
     "id" SERIAL NOT NULL,
     "nombreCurso" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "duracion" INTEGER NOT NULL,
+    "profesorId" INTEGER NOT NULL,
 
-    CONSTRAINT "Cursos_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Curso_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Materias" (
     "id" SERIAL NOT NULL,
     "nombreMateria" TEXT NOT NULL,
+    "profesorId" INTEGER NOT NULL,
 
     CONSTRAINT "Materias_pkey" PRIMARY KEY ("id")
 );
@@ -169,19 +184,28 @@ CREATE UNIQUE INDEX "Estudiantes_cedula_key" ON "Estudiantes"("cedula");
 CREATE UNIQUE INDEX "Profesor_cedula_key" ON "Profesor"("cedula");
 
 -- AddForeignKey
-ALTER TABLE "Usuarios" ADD CONSTRAINT "Usuarios_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Representantes" ADD CONSTRAINT "Representantes_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuarios"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Estudiantes" ADD CONSTRAINT "Estudiantes_representanteId_fkey" FOREIGN KEY ("representanteId") REFERENCES "Representantes"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Profesor" ADD CONSTRAINT "Profesor_id_fkey" FOREIGN KEY ("id") REFERENCES "Usuarios"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Novedades" ADD CONSTRAINT "Novedades_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Curso" ADD CONSTRAINT "Curso_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Materias" ADD CONSTRAINT "Materias_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Actividad" ADD CONSTRAINT "Actividad_materiaId_fkey" FOREIGN KEY ("materiaId") REFERENCES "Materias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Actividad" ADD CONSTRAINT "Actividad_cursoId_fkey" FOREIGN KEY ("cursoId") REFERENCES "Cursos"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Actividad" ADD CONSTRAINT "Actividad_cursoId_fkey" FOREIGN KEY ("cursoId") REFERENCES "Curso"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Actividad" ADD CONSTRAINT "Actividad_profesorId_fkey" FOREIGN KEY ("profesorId") REFERENCES "Profesor"("id") ON DELETE SET NULL ON UPDATE CASCADE;

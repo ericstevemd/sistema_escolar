@@ -83,13 +83,16 @@ model Profesor {
   cursos   Curso[]
 Usuario   Usuarios   @relation(fields: [id], references: [id])
 Materias Materias[]
+ novedades Novedades[]  
 }
+
 model Novedades{
   id Int @id @default(autoincrement())
   tipo_novedade    String
   fecha            DateTime
   profesorId        Int
   descricion       String
+   profesor    Profesor   @relation(fields: [profesorId], references: [id])
 
 
 } 
