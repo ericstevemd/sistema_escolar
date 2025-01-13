@@ -168,3 +168,12 @@ model HistorialAcademico {
   estudiante     Estudiantes     @relation(fields: [estudianteId], references: [id])
   anioLectivo    AnioLectivo     @relation(fields: [anioLectivoId], references: [id])
 }
+model Novedades{
+  id Int @id @default(autoincrement())
+  tipo_novedade    String
+  fecha            DateTime
+  materiaId        Int
+  descricion       String
+
+
+} 

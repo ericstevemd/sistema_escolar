@@ -12,6 +12,7 @@ import { NotificacioModule  } from './notificacio/notificacio.module';
 import { EmailModule } from './email/email.module';
 import { ConfigModule  ,ConfigService} from '@nestjs/config';
 import { CursoModule } from './curso/curso.module';
+import { NovedadesModule } from './novedades/novedades.module';
 
 
 
@@ -29,7 +30,8 @@ ConfigModule.forRoot({
         RendimientosModule,
          NotificacioModule,
      EmailModule,
-     CursoModule 
+     CursoModule,
+     NovedadesModule 
   ],
   controllers: [AppController],
   providers: [AppService],
