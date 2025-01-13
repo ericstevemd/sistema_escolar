@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, NotFoundException } from '@nestjs/common';
 import { CreateNovedadeDto } from './dto/create-novedade.dto';
 import { UpdateNovedadeDto } from './dto/update-novedade.dto';
 import { PrismaClient } from '@prisma/client';
@@ -16,18 +16,47 @@ await this.$connect();
   }
 
   findAll() {
-    return `This action returns all novedades`;
+   return this.novedades.findMany();
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} novedade`;
+  async findOne(id: number) {
+    const novedades =await this.novedades.findUnique({
+where :{id}
+    });
+    if(!novedades){
+      throw new NotFoundException('la novedades no hay id ')
+    }
+    return novedades
   }
 
-  update(id: number, updateNovedadeDto: UpdateNovedadeDto) {
-    return `This action updates a #${id} novedade`;
+  async update(id: number, updateNovedadeDto: UpdateNovedadeDto) {
+
+    const novedades =await this.novedades.findUnique({
+      where :{id}
+    });
+    if(! novedades){
+      throw new NotFoundException("EL PROFESOR DE ID NO ENCUENTRA ")
+    }
+
+    return this.novedades.update({
+      where:{id},
+      data:updateNovedadeDto
+    });
+  }
+  
+
+  async remove(id: number) {
+    const novedades =await this.novedades.findUnique({
+      where:{id}
+    });
+    if(!novedades){
+      throw new NotFoundException("profesor con id no es encuentra ")
+    }
+   await this.novedades.delete({
+    where:{id}
+   }) ;
+    return  {nessage : `PROFESOR con ID ${id} eliminado correctamente`};
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} novedade`;
-  }
 }
