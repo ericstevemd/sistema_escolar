@@ -14,6 +14,7 @@ enum Rol {
 }
 
 
+
 model Usuarios {
   id              Int      @id @default(autoincrement())
   cedula          String   @unique
@@ -83,6 +84,15 @@ model Profesor {
 Usuario   Usuarios   @relation(fields: [id], references: [id])
 Materias Materias[]
 }
+model Novedades{
+  id Int @id @default(autoincrement())
+  tipo_novedade    String
+  fecha            DateTime
+  profesorId        Int
+  descricion       String
+
+
+} 
 
 model Curso {
   id           Int        @id @default(autoincrement())
@@ -103,6 +113,7 @@ model Materias {
   profesor   Profesor  @relation(fields: [profesorId], references: [id])
   actividades  Actividad[]
 }
+
 
 model Actividad {
   id           Int         @id @default(autoincrement())
@@ -168,12 +179,3 @@ model HistorialAcademico {
   estudiante     Estudiantes     @relation(fields: [estudianteId], references: [id])
   anioLectivo    AnioLectivo     @relation(fields: [anioLectivoId], references: [id])
 }
-model Novedades{
-  id Int @id @default(autoincrement())
-  tipo_novedade    String
-  fecha            DateTime
-  materiaId        Int
-  descricion       String
-
-
-} 

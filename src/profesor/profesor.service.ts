@@ -5,6 +5,9 @@ import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ProfesorService  extends PrismaClient implements OnModuleInit{
+  findProfesorWithNovedades(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
   cursoService: any;
   async onModuleInit() {
     await this.$connect();
