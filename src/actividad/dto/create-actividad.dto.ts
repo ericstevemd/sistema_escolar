@@ -14,7 +14,8 @@ export class CreateActividadDto {
     cursoId  
     @IsNumber()        
     profesorId   
-   
+   @IsString()
+    foto 
 
 
 }

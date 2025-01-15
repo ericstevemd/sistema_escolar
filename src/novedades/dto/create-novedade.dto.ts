@@ -1,5 +1,4 @@
-import { Profesor } from './../../../node_modules/.prisma/client/index.d';
-import { IsDateString, IsISO8601, IsString, } from "class-validator"
+import { IsDateString, IsISO8601, IsNumber, IsString, } from "class-validator"
 
 export class CreateNovedadeDto {
     @IsString()
@@ -7,7 +6,7 @@ export class CreateNovedadeDto {
  @IsISO8601()
     @IsDateString()
   fecha  
-  @IsString()
+ @IsNumber()
   profesorId        
   @IsString()
   descricion       

@@ -10,11 +10,18 @@ export class NovedadesService extends PrismaClient implements OnModuleInit {
 await this.$connect();
   }
  async create(createNovedadeDto: CreateNovedadeDto) {
-    return await this.novedades.create({
-      data:createNovedadeDto
-    })
-  }
+  const { tipo_novedade, fecha, profesorId, descricion } = createNovedadeDto;
+  const fechaISO = new Date(fecha).toISOString();
 
+  return await this.novedades.create({
+    data: {
+      tipo_novedade,
+      fecha: fechaISO,
+      profesorId,
+      descricion,
+    },
+  });
+};
   findAll() {
    return this.novedades.findMany();
 
