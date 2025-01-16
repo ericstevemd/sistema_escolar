@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from "class-validator"
+import { IsDate, IsDateString, IsISO8601, IsNumber, IsString } from "class-validator"
 
 export class CreateActividadDto {
 
@@ -6,7 +6,9 @@ export class CreateActividadDto {
     nombre  
     @IsString()     
     descripcion 
-    @IsDate() 
+
+    @IsISO8601()
+    @IsDateString()
     fecha    
     @IsNumber()    
     materiaId    

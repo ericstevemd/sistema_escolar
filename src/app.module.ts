@@ -14,6 +14,8 @@ import { ConfigModule  ,ConfigService} from '@nestjs/config';
 import { CursoModule } from './curso/curso.module';
 import { NovedadesModule } from './novedades/novedades.module';
 import { AsistenciaModule } from './asistencia/asistencia.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 
 
@@ -33,7 +35,11 @@ ConfigModule.forRoot({
      EmailModule,
      CursoModule,
      NovedadesModule,
-     AsistenciaModule 
+     AsistenciaModule ,
+     ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'), // Directorio donde se almacenan los archivos estáticos
+      serveRoot: '/static', // Ruta donde estarán disponibles los archivos estáticos
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
