@@ -57,13 +57,19 @@ export class ProfesorController {
     return this.profesorService.findProfesorWithCursos(+id);
         }
 
-    @Get(':id/materias')
+@Get(':id/materias')
 async getProfesorWithMaterias(@Param('id') id: number) {
   return this.profesorService.findProfesorWithMaterias(+id);
 }
 @Get(':id/novedades')
 async getProfesorWithNovedades(@Param('id') id: number) {
   return this.profesorService.findProfesorWithNovedades(+id);
+}
+
+
+@Get(':id/actividades')
+async getProfesorWithActividades(@Param('id') id: string) {
+  return this.profesorService.findProfesorWithActividades(+id);
 }
 
 }
