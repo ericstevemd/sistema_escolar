@@ -8,11 +8,25 @@ export class ActividadService  extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
   }
+  
   async create(createActividadDto: CreateActividadDto) {
-    return  await this.actividad.create({
-      data:createActividadDto
-    })
-  }
+    // Valida y convierte la fecha si está presente
+    if (createActividadDto.fecha) {
+      try {
+        const fecha = new Date(createActividadDto.fecha);
+        if (isNaN(fecha.getTime())) {
+          throw new Error('La fecha proporcionada no es válida.');
+        }
+        createActividadDto.fecha = fecha.toISOString();
+      } catch (error) {
+        throw new Error('Formato de fecha incorrecto. Use ISO-8601 (YYYY-MM-DDTHH:MM:SSZ).');
+      }
+    }
+    return await this.actividad.create({
+      data: createActividadDto,
+    });
+
+    }
 
   findAll() {
     return this.actividad.findMany();
