@@ -65,6 +65,9 @@ export class UsuarioController {
     return { user: await this.usuarioService.getProfile(userId) };
   }
 
+
+  
+
 }
   
 
