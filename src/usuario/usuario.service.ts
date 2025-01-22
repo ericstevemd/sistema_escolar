@@ -154,7 +154,9 @@ async login(cedula:string,password:string ){
   }
   const user=await this.usuarios.findFirst({
     where: { cedula, isDeleted:false
-    }, include:{profesores :true},
+    }, include:{profesores :true,
+      Representantes:true,
+    },
 
 
   });
@@ -180,6 +182,7 @@ async login(cedula:string,password:string ){
  });
  // Verifica si es profesor
  const isProfessor = user.profesores.length > 0;
+ const hasRepresentatives = user.Representantes.length > 0;
     console.log(`Inicio de sesión exitoso para usuario: ${user.cedula}`)
         return { message: 'Inicio de sesión exitoso.', token
           ,cedula:user.cedula,
@@ -187,6 +190,8 @@ async login(cedula:string,password:string ){
           ,userType: user.rol,
           isProfessor,
     profesorInfo: isProfessor ? user.profesores : null,
+    hasRepresentatives,
+    representativeInfo: hasRepresentatives ? user.Representantes : null,
 
      
          }

@@ -32,8 +32,6 @@ model Usuarios {
   resetCode   String? 
   notificaciones  Notificacion[]
   profesores Profesor[]
-  
-
   Representantes Representantes[]
 }
 
@@ -56,6 +54,7 @@ model Representantes {
   estudiantes            Estudiantes[]
   usuario               Usuarios?     @relation(fields: [usuarioId], references: [id])
   usuarioId             Int?
+   
 }
 
 model Estudiantes {
