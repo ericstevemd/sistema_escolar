@@ -74,4 +74,15 @@ export class AsistenciaService extends PrismaClient implements OnModuleInit {
       },
     });
   }
+
+  async findOneWithRelations(id: number) {
+    return await this.asistencia.findUnique({
+      where: { id },
+      include: {
+        profesor: true,
+        materia: true,
+        estudiante: true, // Asegúrate de que la relación en Prisma está bien definida
+      },
+    });
+  }
 }

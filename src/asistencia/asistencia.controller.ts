@@ -31,4 +31,11 @@ export class AsistenciaController {
   remove(@Param('id') id: string) {
     return this.asistenciaService.remove(+id);
   }
+
+
+  @Get(':id/profesor/materia/estudiantes')
+  async getAsistenciaWithDetails(@Param('id') id: string) {
+    return this.asistenciaService.findOneWithRelations(Number(id));
+  }
+
 }
